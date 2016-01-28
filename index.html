@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+		<!--width=device-width為適應各式裝置螢幕大小 initial-scale=1為初始比例-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<!--X-UA-Compatible設置IE兼容模式；有什麼最新的版本IE，就用什麼版本的標準模式。-->
+		<meta name="description" content="MetroResume">
+		<title>JQUERY UI TEST</title>
+		<!-- <link href="image/favicon.ico" rel="icon"> -->
+		<link href="css/reset.css" rel="stylesheet">  <!--ResetCSS	-->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/jquery-ui.min.css" rel="stylesheet">
+		<link href="css/jqueryuiTest.css" rel="stylesheet"><!--自己寫的css要最後一個讀取-->
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script>
+		$(function(){
+			$(window).scroll(function() {
+				if( $(this).scrollTop() > $('#header').height() + 60 ) {
+					$(".mainMenu").addClass("fixedMenu"); //當螢幕滾動下滑距離超過header的長度時就讓導覽列變成固定在頂端
+					$("#main").css("padding-top","60px"); //因為導覽列變成fixed的 所以會多出導覽列的空位 增加間距
+				}else{
+					$(".mainMenu").removeClass("fixedMenu");
+					$("#main").css("padding-top",0);
+				}
+			});	
+
+			$("#tool_1").click(function(){
+				var exAPI = 'http://g.e-hentai.org/api.php';
+				var temp = {
+				  "method": "gdata",
+				  "gidlist": [
+				      [618395,"0439fa3666"]
+				  ],
+				  "namespace": 1
+				}
+				var exRequest = JSON.stringify(temp);
+				console.log(temp);
+				console.log(typeof(temp));
+				console.log(exRequest);
+				console.log(typeof(exRequest));
+
+				$.ajax({
+					method: "POST",
+					url: exAPI,
+					data: exRequest,
+					dataType: "json",
+					success: function(msg,i){
+						console.log(msg);
+						console.log(i);
+						console.log(url);
+					}
+				});//end ajax
+			});
+				
+		});//end ready
+		</script>
+	</head>
+	<body>
+		<div id="header" class="jumbotron">
+			<h1>JQUERY UI TEST</h1>
+			<p>Book【JavaScript & jQuery: the missing manual】</p>
+		</div>
+
+
+		<div id="main">
+			<ul class="mainMenu ">
+				<li>
+					<a href="#">Home</a>
+				</li>
+				<li>
+					<a href="#">MENU_1</a>
+				</li>
+				<li>
+					<a href="#">MENU_2</a>
+					<ul>
+						<li>
+							<a href="#">SubMENU_1</a>
+						</li>
+						<li>
+							<a href="#">SubMENU_2</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<script>
+			$(function(){
+				$(".mainMenu").menu({
+					icons:{
+						submenu: "ui-icon-circle-triangle-s"
+					},
+					position:{
+						my: "center top",
+						at: "center bottom"
+					}
+				});
+			});
+			</script>
+
+			<div class="container">
+				<div class="row">
+
+					<div class="col-sm-3 col-xs-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI dialog( )</div>
+							<div class="panel-body">
+
+								<button id="dia_1" class="btn btn-block btn-info" title="">
+									對話框訊息
+								</button>
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#dialogScreen").hide();
+							$("#dia_1").click(function(){
+								$("#dialogScreen").dialog({
+									modal: true,
+									show: "explode",
+									hide: "bounce",
+									buttons: {
+										"close": function(){
+											$(this).dialog("close");
+										},
+										"不要按我": function(){
+											$(this).children('h1').text("按屁按");
+										}
+									}
+								});
+							});							
+						})
+						</script>
+					</div>
+
+					<div class="col-sm-3 col-xs-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI tooltip( )</div>
+							<div class="panel-body">
+
+								<button id="tool_1" class="btn btn-block btn-info" title="">
+									提示框1
+								</button>
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#tool_1").tooltip({
+								content: $("#tooltipTemplate").html()
+							});
+						});
+						</script>
+						<script id="tooltipTemplate" type="text/template">
+							<img src="image/Doge.jpg" alt="doge" style="width:100%"/>
+						</script>
+					</div>
+
+					<div class="col-sm-6 col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI tabs( )</div>
+							<div class="panel-body">
+
+								<div id="tabPanel">
+									<ul>
+										<li>
+											<a href="#tab1">TAB_1</a>
+										</li>
+										<li>
+											<a href="#tab2">TAB_2</a>
+										</li>
+										<li>
+											<a href="#tab3">TAB_3</a>
+										</li>
+									</ul>
+									<div id="tab1">
+										<p>TAB1的區塊</p>
+									</div>
+									<div id="tab2">
+										<p>TAB2的區塊</p>
+									</div>
+									<div id="tab3">
+										<p>TAB3的區塊</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<script>
+							$(function(){
+							$("#tabPanel").tabs({
+								show: "slideDown",
+								hide: "slideUp",
+								active: false,
+								collapsible: true,
+								event: "click",
+								heightStyle: "auto",
+								beforeActivate: function(evt){
+									location.hash = $(evt.currentTarget).attr("href");
+								}
+							});
+							console.log(location.hostname);
+							console.log(location.href);
+							var hash = location.hash;
+							if( hash ){
+								console.log(location.hash);
+								$("#tabPanel").tabs("load", hash);
+							}
+						});
+						</script>
+					</div>
+
+				</div><!--end row-->
+				<div class="row">
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI accordion( )</div>
+							<div class="panel-body">
+
+								<div id="accordion">
+									<h1>Accordion_1（手風琴）</h1>
+									<div>
+										Accordion1的區塊
+									</div>
+									<h1>Accordion_2（手風琴）</h1>
+									<div>
+										Accordion2的區塊
+									</div>
+									<h1>Accordion_3（手風琴）</h1>
+									<div>
+										Accordion3的區塊
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#accordion").accordion({
+								active: false,
+								collapsible: true,
+								animate:600,
+								heightStyle: "content",
+								icons: {
+								    header: 'ui-icon-circle-plus',
+								    activeHeader: 'ui-icon-circle-minus'
+								}
+							});							
+						})
+						</script>			
+					</div>
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+
+							<div class="panel-heading">jQueryUI detepicker( )</div>
+							<div class="panel-body">
+
+							<div>
+								<label for="birthDate">生日</label>
+								<input type="text" name="birthDate" id="birthDate">
+								<label id="bthDate"></label>
+							</div>
+							<div>
+								<label for="startDate">開始</label>
+								<input type="text" name="startDate" id="startDate">
+								<label id="stDate"></label>
+							</div>
+							<button id="btnDate" class="btn btn-block btn-info">嗯？</button>
+
+							</div>				
+						</div>
+						<script>
+						$(function(){
+							var monName = ["一月","二月","三月","四月","五月","六月",
+							"七月","八月","九月","十月","十一月","十二月"];
+							$("#birthDate").datepicker({
+								numberOfMonths: 2,
+								changeMonth: true,
+								changeYear: true,
+								yearRange: "-120:+0",
+								dateFormat: "yy / mm / dd, D",
+								maxDate : 0
+							});
+							$("#startDate").datepicker({
+								minDate:"+3w",
+								dateFormat: "y年 / M / dd, D",
+								monthNames: monName
+							});
+							$("#btnDate").click(function(){
+								$("#bthDate").text( $("#birthDate").val() );
+								$("#stDate").text( $("#startDate").val() );
+							});							
+						})
+						</script>
+					</div>
+				</div><!--end row-->
+				<div class="row">
+
+					<div class="col-sm-4 col-xs-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI selectmenu( )</div>
+							<div class="panel-body">
+
+								<select name="choice" id="choice">
+									<option value="">--Please select one--</option>
+									<option value="cho1">選項ㄧ</option>
+									<option value="cho2">選項二</option>
+									<option value="cho3">選項三</option>
+									<option value="cho4">選項四</option>
+								</select>
+								<label id="choRes"></label>
+
+							</div>
+						</div>
+						<script>
+							$(function(){
+								$("#choice").selectmenu({
+									width:"100%",
+									icons:{
+										button:"ui-icon-circle-triangle-s"
+									},
+									change: function(event, ui){
+										console.log(ui);
+										$("#choRes").html("<p>選擇了第【"+ ui.item.index +"】個選項</p><p>選項為【"+ ui.item.label + "】</p><p>值為【"+ ui.item.value + "】</p>");
+									}
+								});								
+							})						
+						</script>
+					</div>
+
+					<div class="col-sm-4 col-xs-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI button( )</div>
+							<div class="panel-body">
+
+								<input type="submit" id="submit" value="Submit" class="button">
+								<input type="reset" id="reset" value="Reset" class="button">
+								<button id="button" class="button">A button element</button>
+
+							</div>
+						</div>
+						<script>
+							$(function(){
+								$(".button").button({
+									icons:{
+										primary: "ui-icon-gear",
+										secondary: "ui-icon-triangle-1-s"
+									},
+									text: false
+								});
+							});
+						</script>
+					</div>
+
+					<div class="col-sm-4 col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI buttonset( )</div>
+							<div class="panel-body">
+
+								<div id="radio">
+									<input type="radio" id="none" name="bags" value="0">
+									<label for="none">0</label>
+
+									<input type="radio" id="one" name="bags" value="1">
+									<label for="one">1</label>
+
+									<input type="radio" id="two" name="bags" value="2">
+									<label for="two">2</label>
+								</div>
+
+								<div id="checkbox">
+									<input type="checkbox" id="Android" name="OS" value="android" >
+									<label for="Android">Android</label>
+
+									<input type="checkbox" id="iOs" name="OS" value="ios">
+									<label for="iOs">iOs</label>
+
+									<input type="checkbox" id="WindowsPhone" name="OS" value="windowsphone">
+									<label for="WindowsPhone">WP</label>
+								</div>
+								<button id="radchcBtn" class="btn btn-block btn-info">嗯？</button>
+								<p id="radchcRes"></p>
+
+							</div>
+						</div>
+						<script>
+							$(function(){
+								$("#radio, #checkbox").buttonset();
+								$("#radchcBtn").click(function(){
+									$("#radchcRes").text("");
+
+									if ( $("#radio input:checked") ){
+										$("#radchcRes").append( "<p>Radio：" + $("#radio input:checked").val() + "</p>");
+									}
+
+									if ( $("#checkbox input:checked") ){
+										 var temp = $("#checkbox input:checked") ;
+									}
+									$.each(temp, function(i, data){
+										console.log(i);
+										$("#radchcRes").append( "<p>Checkbox：" + data.value + "</p>");
+									})
+
+								});
+
+							})
+						</script>
+					</div>
+				</div><!--end row-->
+				<div class="row">
+					<div class="col-sm-5 col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI autocomplete( )</div>
+							<div class="panel-body">
+
+								<input type="text" id="color" name="color">
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#color").autocomplete({
+								source: ["Barn Bed", "Beetroot", "Brick", "Bright Maroon", "Burgundy",
+								{
+									label: "Basdsafasfdafdafad",
+									value: "ba"
+								},
+								{
+									label: "Adfdsgsfgsfsdfdfdsfsdfs",
+									value: "ad"
+								}],
+								delay: 500,
+								minLength: 2
+							});
+						})
+						</script>
+					</div>
+
+					<div class="col-sm-3 col-xs-6">
+						<div id="draggable" class="panel panel-default">
+							<div class="panel-heading">jQueryUI draggable( )</div>
+							<div class="panel-body">	
+								可拖動元素
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#draggable").draggable({
+								cursor: "pointer",
+								handle: ".panel-heading",
+								axis: "x",
+								cancel: ".panel-body",
+								containment: "#main",
+								// helper: function( event ){
+								// 	return $("<div class=\"ui-widget-header\">嗯?</div>");
+								// }
+								opacity: 0.5,
+								revert: "invalid",
+								start: function(event,ui){
+									ui.helper.css("transform","scale(1.5)");
+								},
+								stop: function(event,ui){
+									ui.helper.css("transform","scale(1)");
+								},
+								zIndex: 999
+							});
+						})
+						</script>
+					</div>
+
+					<div class="col-sm-4 col-xs-6">
+						<div id="goal" class="panel panel-default">
+							<div class="panel-heading">jQueryUI droppable( )</div>
+							<div class="panel-body">	
+								著陸點
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#goal").droppable({
+								activeClass: "highlight",
+								drop: function(event, ui){
+									ui.helper.hide("explode");
+								},
+								activate: function(){
+									$(this).find(".panel-body").append("<p class=\"dropMsg\">把元素拖到這來消滅</p>");
+								},
+								deactivate: function(){
+									$(".dropMsg").remove();
+								},
+								over: function(){
+									$(".dropMsg").text("阿對對對，就是這裡");
+								},
+								out: function(){
+									$(".dropMsg").text("把元素拖到這來消滅");
+								},
+								accept: "#draggable"
+							});
+						})
+						</script>
+					</div>
+				</div><!--end row-->
+				<div class="row">
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI sortable( )</div>
+							<div class="panel-body">	
+								
+								<ul id="playList">
+									<li>我難過</li>
+									<li>好久不見</li>
+									<li>無所謂</li>
+									<li>5566得第一</li>
+								</ul>
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#playList").sortable({
+								opacity: 0.5,
+								hepler: "clone",
+								placeholder: "ui-state-highlight",
+								cursor: "pointer",
+								connectWith: "#music"
+
+							});
+						})
+						</script>
+					</div>
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI sortable( )</div>
+							<div class="panel-body">	
+								
+								<ul id="music">
+									<li>格鬥天王電視原聲帶	</li>
+									<li>西街少年 電視原聲帶</li>
+									<li>56不能亡</li>
+									<li>MVP情人電視原聲帶</li>
+								</ul>
+
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#music").sortable({
+								opacity: 0.5,
+								placeholder: "ui-state-highlight",
+								cursor: "pointer",
+								connectWith: "#playList"
+
+							});
+						})
+						</script>
+					</div>
+
+				</div><!--end row-->
+
+			</div> <!-- end container -->
+		</div> <!-- end #main -->
+
+		<div id="dialogScreen" title="這是標題" >
+			<h1>Dialog</h1>
+			<p>這是內文。</p>
+		</div>
+	</body>
+</html>

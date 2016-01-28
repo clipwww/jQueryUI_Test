@@ -1,0 +1,75 @@
+body{
+	font-family: 微軟正黑體;
+	padding-top:250px;
+}
+#header{
+	position: fixed;
+	top:0;
+	width:100vw;
+	height:250px;
+	padding:10px 0 50px 0px;
+	background-image:url("../image/bg_1.jpg");
+	background-repeat:no-repeat;
+	background-size:cover;
+	color:black;
+	text-align: center;
+	font-weight: bold;
+	text-shadow:1px 1px 0 white;
+}
+#main{
+	position: relative;
+	background-color: black;
+}
+.mainMenu{
+	position: relative;
+	float: left;
+	margin-bottom:50px;
+	width:100%; 
+}
+.ui-menu .ui-menu{
+	width:10em;
+}
+.mainMenu > li{
+	width: 10em;
+	float: left;
+}
+.fixedMenu{
+	position: fixed;
+	top:0;
+	z-index: 9999;
+}
+.highlight{
+	border:5px solid #F00;
+}
+#playList{
+	counter-reset: step-counter;
+}
+#playList li {
+	counter-increment: step-counter;
+	margin-bottom:10px;
+	font-size:18px;
+}
+#playList li:before{
+	content: counter(step-counter);
+	font-weight: bold;
+	background-color: rgb(255,0,0);
+	border-radius: 5px;
+	color: white;
+	padding:2px;
+	margin-right: 10px;
+	position: relative;
+}
+#playList li:after{
+	content: counter(step-counter);
+	float:right
+}
+#playList .ui-sortable-helper {
+  padding-left: 30px;
+}
+
+#playList .ui-sortable-helper:before {
+  content: '';
+  padding: 0;
+  margin: 0;
+  background-color: none;
+}
