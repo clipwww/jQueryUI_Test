@@ -15,6 +15,7 @@
 		<script src="js/jquery-2.2.0.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
+		<script src="../gallery_size.user.js/gallery-size.user.js"></script>
 		<script>
 		$(function(){
 			$(window).scroll(function() {
@@ -27,6 +28,8 @@
 				}
 			});	
 
+
+
 			$("#tool_1").click(function(){
 				var exAPI = 'http://g.e-hentai.org/api.php';
 				var temp = {
@@ -36,24 +39,36 @@
 				  ],
 				  "namespace": 1
 				}
+
 				var exRequest = JSON.stringify(temp);
-				console.log(temp);
-				console.log(typeof(temp));
-				console.log(exRequest);
-				console.log(typeof(exRequest));
+
+				console.log(  get_reqs(['gtr0','gtr1'], 25) );
 
 				$.ajax({
 					method: "POST",
-					url: exAPI,
+					url: "http://g.e-hentai.org/api.php",
 					data: exRequest,
-					dataType: "json",
+					contentType:"appliaction/json",
+					dataType: "JSON",
 					success: function(msg,i){
 						console.log(msg);
 						console.log(i);
-						console.log(url);
+					},
+					error: function(e){
+						console.log(e);
 					}
 				});//end ajax
-			});
+
+				// $.ajax({
+				// 	method:"GET",
+				// 	url:"http://g.e-hentai.org",
+				// 	dataType: "XML",
+				// 	success: function(msg){
+				// 		console.log(msg);
+				// 	}
+				// })
+
+			});//end tool_1 click 
 				
 		});//end ready
 		</script>
@@ -512,10 +527,10 @@
 							<div class="panel-body">	
 								
 								<ul id="playList">
-									<li>我難過</li>
-									<li>好久不見</li>
-									<li>無所謂</li>
-									<li>5566得第一</li>
+									<li id="song_1">我難過</li>
+									<li id="song_2">好久不見</li>
+									<li id="song_3">無所謂</li>
+									<li id="song_4">5566得第一</li>
 								</ul>
 
 							</div>
@@ -530,6 +545,12 @@
 								connectWith: "#music"
 
 							});
+
+							$("#playList").click(function(){
+								console.log( $("#playList").sortable("serialize") );
+								console.log( $("#playList").sortable("toArray") );							
+							});
+
 						})
 						</script>
 					</div>
@@ -560,9 +581,120 @@
 						})
 						</script>
 					</div>
+				</div><!--end row-->
+				<div class="row">
+					<div class="col-sm-5">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI 各種特效( )</div>
+							<div class="panel-body">
+								<!-- <img src="image/2808_key.PNG" alt="100分" /> -->
+								<div id="effectDiv">
+									<img id="effectImg" src="image/h8h8.PNG" alt="憨臉" />
+									TEST
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-7">
+						<div class="panel panel-default">
+							<div class="panel-heading">jQueryUI 各種特效( )</div>
+							<div class="panel-body">
+								<!-- <div class="btn-group"> -->
+									<button id="explodeBtn" class="btn btn-info">explode</button>
+									<button id="blindBtn" class="btn btn-info">blind</button>
+									<button id="bounceBtn" class="btn btn-info">bounce</button>
+									<button id="clipBtn" class="btn btn-info">clip</button>
+									<button id="dropBtn" class="btn btn-info">drop</button>
+									<button id="foldBtn" class="btn btn-info">fold</button>
+									<button id="puffBtn" class="btn btn-info">puff</button>
+									<button id="scaleBtn" class="btn btn-info">scale</button>
+									<button id="sizeBtn" class="btn btn-info">size</button>
+									<button id="hlBtn" class="btn btn-info">highlight</button>
+									<button id="pulsateBtn" class="btn btn-info">pulsate</button>
+									<button id="shakeBtn" class="btn btn-info">shake</button>
+									<button id="easbouBtn" class="btn btn-info btn-block">easing+bounce</button>
+								<!-- </div> -->
+							</div>
+						</div>
+						<script>
+						$(function(){
+							$("#explodeBtn").click(function(){
+								$("#effectImg").hide('explode',{pieces:144},500,function(){
+									$(this).show('explode',{pieces:4},500);
+								});
+							});
+							$("#blindBtn").click(function(){
+								$("#effectImg").hide('blind',{direction:"up"},500,function(){
+									$(this).show('blind',{direction:"left"},500);
+								});
+							});
+							$("#bounceBtn").click(function(){
+								$("#effectImg").hide('bounce',{distance:500,time:20},500,function(){
+									$(this).show('bounce',{distance:50,time:100},500);
+								});
+							});
+							$("#clipBtn").click(function(){
+								$("#effectImg").hide('clip',{direction:"vertical"},500,function(){
+									$(this).show('clip',{direction:"horizontal"},500);
+								});
+							});
+							$("#dropBtn").click(function(){
+								$("#effectImg").hide('drop',{direction:"down"},500,function(){
+									$(this).show('drop',{direction:"right"},500);
+								});
+							});
+							$("#foldBtn").click(function(){
+								$("#effectImg").hide('fold',{size:"50%",horizFirst:false},500,function(){
+									$(this).show('fold',{size:"100%",horizFirst:true},500);
+								});
+							});
+							$("#puffBtn").click(function(){
+								$("#effectImg").hide('puff',{percent:30},500,function(){
+									$(this).show('puff',{percent:500},500);
+								});
+							});
+							$("#scaleBtn").click(function(){
+								$("#effectImg").hide('scale',500,function(){
+									$(this).show('scale',500);
+								});
+							});
+							$("#sizeBtn").click(function(){
+								$("#effectDiv").hide('size',{to:{width:"500",height:"500"},origin:[150,150],scale:"both"},500, function(){
+									$(this).show('size',{to:{width:"0",height:"0"},origin:[0,0],scale:"both"},500);
+								});
+							});
+							$("#hlBtn").click(function(){
+								$("#effectDiv").effect("highlight", {"background-color:":"#F00"},1000);
+							});
+							$("#pulsateBtn").click(function(){
+								$("#effectImg").effect("pulsate", {times:10},1000);
+							});
+							$("#shakeBtn").click(function(){
+								$("#effectImg").effect("shake", {direction:"right", distance:5, times:100},1000);
+							});
+							$("#easbouBtn").click(function(){
+								$("#effectImg").hide('bounce',
+									{
+										distance: 100,
+										times: 20,
+										easimg: "easeOutBounce"
+									},500,
+									function(){
+										$(this).show('bounce',
+										{
+											distance:100,
+											time:20,
+											easimg: "easeInBounce"
+										},500);
+									});
+							});
+						})
+						</script>
+					</div>
 
 				</div><!--end row-->
-
 			</div> <!-- end container -->
 		</div> <!-- end #main -->
 

@@ -73,3 +73,12 @@ body{
   margin: 0;
   background-color: none;
 }
+#effectDiv{
+	height:300px;
+	width:300px;
+	border:1px solid black;
+	background-color: #FF6A00;
+}
+button{
+	margin-top:5px;
+}
