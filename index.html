@@ -59,14 +59,14 @@
 					}
 				});//end ajax
 
-				// $.ajax({
-				// 	method:"GET",
-				// 	url:"http://g.e-hentai.org",
-				// 	dataType: "XML",
-				// 	success: function(msg){
-				// 		console.log(msg);
-				// 	}
-				// })
+				$.ajax({
+					method:"GET",
+					url:"http://g.e-hentai.org",
+					dataType: "XML",
+					success: function(msg){
+						console.log(msg);
+					}
+				})
 
 			});//end tool_1 click 
 				
@@ -589,7 +589,7 @@
 							<div class="panel-body">
 								<!-- <img src="image/2808_key.PNG" alt="100分" /> -->
 								<div id="effectDiv">
-									<img id="effectImg" src="image/h8h8.PNG" alt="憨臉" />
+									<img id="effectImg" src="image/h8h8.png" alt="憨臉" />
 									TEST
 								</div>
 
@@ -695,6 +695,102 @@
 					</div>
 
 				</div><!--end row-->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="panel panel-default">
+ 							<div class="panel-heading">
+ 								To Do List
+ 							</div>
+							<div class="panel-body">
+								<div id="to-do" class="col-sm-6">
+									<h3>To Be Done</h3><hr/>
+									<ul id="todo-list" class="sortlist">
+									</ul>
+								</div>
+								<div id="completed" class="col-sm-6">
+									<h3>Completed Tasks</h3><hr/>
+									<ul id="completed-list" class="sortlist">
+									</ul>
+								</div>
+							</div>
+							<div class="panel-footer">
+								<button id="addTodo" class="btn-block">Add to-do item</button>
+							</div>
+						</div>
+					</div>
+					<div id="newTodo" title="Add to-do item">
+						<form>
+							<p>
+								<label for="task">Task Name:</label>
+								<input type="text" name="task" id="task">
+							</p>
+						</form>
+					</div>
+					<script>
+					$(function(){
+						$("#addTodo").button({
+							icons:{
+								primary: "ui-icon-circle-plus"
+							}
+						}).click(function(){
+							$("#newTodo").dialog("open");
+						});
+
+						$("#newTodo").dialog({
+							modal:true,
+							autoOpen:false,
+							buttons:{
+								"Add task":function(){
+									var taskName = $("#task").val();
+									if( taskName === ""){
+										return false;
+									}
+									var taskHTML = "<li><span class=\"done\">%</span>";
+									taskHTML += "<span class=\"delete\">x</span>";
+									taskHTML += "<span class=\"task\" contentEditable></span></li>";
+									var $newTask = $(taskHTML);
+									$newTask.find(".task").text(taskName);
+									$newTask.hide();
+									$("#todo-list").prepend($newTask)
+									$newTask.show('clip',250).effect('highlight',1000);
+									$(this).dialog("close");
+									$("#task").val("");
+								},
+								"Cancel":function(){
+									$(this).dialog("close");
+								}
+							}
+						});//end dialog
+						$("#todo-list").on({
+							click:function(){
+								var $taskItem = $(this).parent("li");
+								$taskItem.slideUp(250,function(){
+									var $this = $(this);
+									$this.detach();
+									$("#completed-list").prepend($this);
+									$this.slideDown();
+								});
+							}
+						},".done");//end on
+
+						$(".sortlist").sortable({
+							connectWith: ".sortlist",
+							cursor: "pointer",
+							placeholder: "ui-state-highlight",
+							cancel: ".delete, .done, .task"
+						});
+
+						$(".sortlist").on({
+							click:function(){
+								$(this).parent("li").effect('puff',function(){
+									$(this).remove();
+								});
+							}
+						},".delete");
+					})//end ready
+					</script>
+				</div> <!-- end row -->
+
 			</div> <!-- end container -->
 		</div> <!-- end #main -->
 
